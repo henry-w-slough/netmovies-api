@@ -2,11 +2,11 @@ using Microsoft.EntityFrameworkCore;
 
 
 /// <summary>
-/// The Connection to the database, specifically for Movie model and operation storage.
+/// The Connection to the database, specifically for Movie-related operations and storage.
 /// </summary>
 public class MovieDbContext : DbContext
 {
-    //connection to table in database for Movies.
+    //reference to db table for movies
     public DbSet<Movie> Movies {get; set;}
     
 
