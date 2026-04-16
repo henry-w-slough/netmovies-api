@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 
 
-class MovieController : ControllerBase
+[ApiController]
+[Route("movies/[controller]")]
+public class MovieController : ControllerBase
 {
     //reference to the database for this object
     private MovieDbContext dbContext;
@@ -13,7 +15,7 @@ class MovieController : ControllerBase
     }
 
 
-    [HttpPost("/players")]
+    [HttpPost]
     public Movie AddMovie(MovieCreateRequest request)
     {
         //creating a new Movie instance to pass on to Service
