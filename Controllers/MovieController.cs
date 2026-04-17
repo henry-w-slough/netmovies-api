@@ -20,7 +20,9 @@ public class MovieController : ControllerBase
     {
         //creating a new Movie instance to pass on to Service
         Movie newMovie = new Movie { 
-            Name = request.Name 
+            Name = request.Name,
+            Description = request.Description,
+            DateAdded = request.DateAdded
         };
 
         //Adds new movie instance in-memory
