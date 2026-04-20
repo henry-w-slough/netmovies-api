@@ -10,6 +10,4 @@ public class MovieCreateRequest
     [Required]
     [MinLength(1)]
     public string? Description {get; set;}
-
-    public DateTime DateAdded {get; set;}
 }
