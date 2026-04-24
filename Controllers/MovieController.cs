@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 
 [ApiController]
 [Route("movies/[controller]")]
 public class MovieController : ControllerBase
 {
+
     //reference to the database for this object
     private MovieDbContext dbContext;
 
@@ -18,7 +20,7 @@ public class MovieController : ControllerBase
     [HttpPost]
     public Movie AddMovie(MovieCreateRequest request)
     {
-        //creating a new Movie instance to pass on to Service
+        //creating a new Movie instance to pass on to dbContext
         Movie newMovie = new Movie {    
             Name = request.Name,
             Description = request.Description,
@@ -31,4 +33,19 @@ public class MovieController : ControllerBase
 
         return newMovie;
     }
+
+
+    public Movie? GetMovieById(int id)
+    {
+        return dbContext.Movies.Find(id);
+    }
+
+
+    [HttpGet]
+    public DbSet<Movie> GetAllMovies()
+    {
+        return dbContext.Movies;
+    }
+
+
 }

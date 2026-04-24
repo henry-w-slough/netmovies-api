@@ -1,13 +1,9 @@
-
-
-
 using System.ComponentModel.DataAnnotations;
 
 
 /// <summary>
-/// Instance of movie data-related information for configuration, referencing, and storage.
+/// Instance of movie-related information for configuration, referencing, and storage.
 /// </summary>
-
 public class Movie
 {
     public int Id {get; set;}
