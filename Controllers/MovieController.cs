@@ -57,14 +57,18 @@ public class MovieController : ControllerBase
 
 
     [HttpGet]
-    public Movie GetMovieById(int id)
+    public IActionResult GetMovieById(int id)
     {
-        if (!ModelState.IsValid)
+        Movie? movie = dbContext.Movies.Find(id);
+        if (movie == null)
         {
-            throw new MovieNotFoundException("Movie requested is invalid.");
+            throw new MovieNotFoundException($"Movie requested of Id: {id} could not be found.");
         }
 
-        return dbContext.Movies.Find(id);
+        //note to self: this is the reason we use a IActionResult
+        //Returning Ok allows global exception handler to do it's thing
+        //while the api continues to work.
+        return Ok(movie);
     }
 
 
