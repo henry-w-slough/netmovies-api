@@ -35,16 +35,10 @@ public class MovieController : ControllerBase
     }
 
 
+    [HttpGet]
     public Movie? GetMovieById(int id)
     {
         return dbContext.Movies.Find(id);
-    }
-
-
-    [HttpGet]
-    public DbSet<Movie> GetAllMovies()
-    {
-        return dbContext.Movies;
     }
 
 
