@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 /// Controls all Movie-related HTTP requests and acts accordingly to them.
 /// </summary>
 [ApiController]
-[Route("movies/[controller]")]
+[Route("metadata/[controller]")]
 public class MovieController : ControllerBase
 {
 
@@ -24,7 +24,7 @@ public class MovieController : ControllerBase
     }
 
 
-    [HttpPost]
+    [HttpPost("createMovie")]
     public async Task<ActionResult<Movie>> CreateMovie(MovieCreateRequest request)
     {
         //checking to see if request matches all required Movie fields.
@@ -60,7 +60,7 @@ public class MovieController : ControllerBase
     }
 
 
-    [HttpGet("/movies/{id:int}")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<Movie>> GetMovieById(int id)
     {
         Movie? movie = dbContext.Movies.Find(id);
@@ -75,7 +75,7 @@ public class MovieController : ControllerBase
 
 
     //NOTE: using {name} restrains name to string, as by default it is string
-    [HttpGet("/movies/{name}")]
+    [HttpGet("{name}")]
     public async Task<ActionResult<Movie>> GetAllMoviesByName(string name)
     {
         List<Movie> moviesToReturn = await dbContext.Movies
