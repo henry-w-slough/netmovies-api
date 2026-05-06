@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 /// Controls all Movie-related HTTP requests and acts accordingly to them.
 /// </summary>
 [ApiController]
-[Route("/metadata/[controller]")]
+[Route("metadata/[controller]")]
 public class MovieController : ControllerBase
 {
 
@@ -24,7 +24,7 @@ public class MovieController : ControllerBase
     }
 
 
-    [HttpPost("/metadata/CreateMovie")]
+    [HttpPost("createMovie")]
     public async Task<ActionResult<Movie>> CreateMovie(MovieCreateRequest request)
     {
         //checking to see if request matches all required Movie fields.
@@ -61,8 +61,22 @@ public class MovieController : ControllerBase
     }
 
 
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<Movie>> GetMovieById(int id)
+    {
+        Movie? movie = dbContext.Movies.Find(id);
+
+        if (movie == null)
+        {
+            throw new MovieNotFoundException($"Movie requested of Id: {id} could not be found.");
+        }
+
+        return Ok(movie);
+    }
+
+
     //NOTE: using {name} restrains name to string, as by default it is string
-    [HttpGet("/metadata/{name}")]
+    [HttpGet("{name}")]
     public async Task<ActionResult<Movie>> GetAllMoviesByName(string name)
     {
         List<Movie> moviesToReturn = await dbContext.Movies
