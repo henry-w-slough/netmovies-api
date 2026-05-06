@@ -25,7 +25,7 @@ public class MovieController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> CreateMovie(MovieCreateRequest request)
+    public async Task<ActionResult<Movie>> CreateMovie(MovieCreateRequest request)
     {
         //checking to see if request matches all required Movie fields.
         if (!ModelState.IsValid)
@@ -60,20 +60,10 @@ public class MovieController : ControllerBase
     }
 
 
-    //restrains id param to int as specified
-    [HttpGet("/movies/{id:int}")]
-    public async Task<IActionResult> GetMovieById(int id)
+    [HttpGet]
+    public ActionResult<Movie> GetMovieById(int id)
     {
-        //using Task for async operation and IActionResult
-        Movie? movieToReturn = await dbContext.Movies.FindAsync(id);
-
-        if (movieToReturn == null)
-        {
-            throw new MovieNotFoundException($"Requested movie of Id: {id} was not found in the database.");
-        }
-
-        return Ok(movieToReturn);
-    }
+        Movie? movie = dbContext.Movies.Find(id);
 
         if (movie == null)
         {
