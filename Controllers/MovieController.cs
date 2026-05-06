@@ -61,7 +61,7 @@ public class MovieController : ControllerBase
 
 
     [HttpGet]
-    public ActionResult<Movie> GetMovieById(int id)
+    public async Task<ActionResult<Movie>> GetMovieById(int id)
     {
         Movie? movie = dbContext.Movies.Find(id);
 
@@ -70,9 +70,13 @@ public class MovieController : ControllerBase
             throw new MovieNotFoundException($"Movie requested of Id: {id} could not be found.");
         }
 
+        return Ok(movie);
+    }
+
+
     //NOTE: using {name} restrains name to string, as by default it is string
     [HttpGet("/movies/{name}")]
-    public async Task<IActionResult> GetAllMoviesByName(string name)
+    public async Task<ActionResult<Movie>> GetAllMoviesByName(string name)
     {
         List<Movie> moviesToReturn = await dbContext.Movies
             //filtering based on found names. Note that names are case-insensitive
