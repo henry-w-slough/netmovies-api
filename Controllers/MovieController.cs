@@ -39,7 +39,7 @@ public class MovieController : ControllerBase
             Name = request.Name,
             Description = request.Description,
             DateAdded = DateTime.Now,
-            MovieUuid = Guid.NewGuid()
+            StorageId = Guid.NewGuid()
         };
 
         try
@@ -61,8 +61,8 @@ public class MovieController : ControllerBase
     }
 
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<Movie>> GetMovieById(int id)
+    [HttpDelete("deleteMovieByMovieId/{id:int}")]
+    public async Task<ActionResult<Movie>> DeleteMovieByMovieId(int id)
     {
         Movie? movie = dbContext.Movies.Find(id);
 
@@ -76,7 +76,7 @@ public class MovieController : ControllerBase
 
 
     //NOTE: using {name} restrains name to string, as by default it is string
-    [HttpGet("{name}")]
+    [HttpGet("getAllMoviesByName/{name}")]
     public async Task<ActionResult<Movie>> GetAllMoviesByName(string name)
     {
         List<Movie> moviesToReturn = await dbContext.Movies
