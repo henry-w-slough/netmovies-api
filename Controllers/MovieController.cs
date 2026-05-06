@@ -25,7 +25,7 @@ public class MovieController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> CreateMovie(MovieCreateRequest request)
+    public async Task<ActionResult<Movie>> CreateMovie(MovieCreateRequest request)
     {
         //checking to see if request matches all required Movie fields.
         if (!ModelState.IsValid)
@@ -61,9 +61,9 @@ public class MovieController : ControllerBase
 
 
     [HttpGet]
-    public ActionResult<Movie> GetMovieById(int id)
+    public async Task<ActionResult<Movie>> GetMovieById([FromQuery] int id)
     {
-        Movie? movie = dbContext.Movies.Find(id);
+        Movie? movie = await dbContext.Movies.FindAsync(id);
 
         if (movie == null)
         {
