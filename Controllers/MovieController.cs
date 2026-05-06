@@ -60,7 +60,7 @@ public class MovieController : ControllerBase
     }
 
 
-    [HttpGet]
+    [HttpGet("/movies/{id:int}")]
     public async Task<ActionResult<Movie>> GetMovieById(int id)
     {
         Movie? movie = dbContext.Movies.Find(id);
