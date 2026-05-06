@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 
 /// <summary>
-/// Instance of movie-related information for configuration, referencing, and storage.
+/// Instance of movie-related information for reference.
 /// </summary>
 public class Movie
 {
@@ -10,4 +10,7 @@ public class Movie
     public string? Name {get; set;}
     public DateTime DateAdded {get; set;}
     public string? Description {get; set;}
+
+    //Note: MovieUuid is only practically used in the Python on-disk movie storage. It is sent in http requests for use of movie-searching there.
+    public Guid MovieUuid {get; set;}
 }
