@@ -16,9 +16,21 @@ builder.Services.AddDbContext<MovieDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
+builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
+    {
+        // Stopping validation of request bodies to allow global exception handler to do it.
+        options.SuppressModelStateInvalidFilter = true;
+    } 
+);
+
+//adding global exception handler to builder
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 var app = builder.Build();
 
+app.UseExceptionHandler(_ => { });
+
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();       

@@ -1,5 +1,6 @@
 using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 
 
 /// <summary>
@@ -27,6 +28,12 @@ public class GlobalExceptionHandler : IExceptionHandler
             errorDetails.ExceptionMessage = exception.Message;
             errorDetails.StatusCode = (int) HttpStatusCode.NotFound;
         }
+        if (exception is DbUpdateConcurrencyException)
+        {
+            errorDetails.Message = "Requested update is already being modified, the operation could not be performed.";
+            errorDetails.ExceptionMessage = exception.Message;
+            errorDetails.StatusCode = (int) HttpStatusCode.Conflict;
+        }
         else {
             //handling every other exception if none of the specific ones match
             errorDetails.StatusCode = (int) HttpStatusCode.InternalServerError;
@@ -42,7 +49,7 @@ public class GlobalExceptionHandler : IExceptionHandler
         // Writing errorDetails in a JSON type
         await httpContext.Response.WriteAsJsonAsync(errorDetails, cancellationToken);
 
-        //Another job well done (:  ...as if this function has any other choice.
+
         return true;
     }
 
