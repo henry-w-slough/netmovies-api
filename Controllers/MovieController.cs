@@ -60,21 +60,42 @@ public class MovieController : ControllerBase
     }
 
 
-    [HttpGet]
-    public ActionResult<Movie> GetMovieById(int id)
+    //restrains id param to int as specified
+    [HttpGet("/movies/{id:int}")]
+    public async Task<IActionResult> GetMovieById(int id)
     {
-        Movie? movie = dbContext.Movies.Find(id);
+        //using Task for async operation and IActionResult
+        Movie? movieToReturn = await dbContext.Movies.FindAsync(id);
+
+        if (movieToReturn == null)
+        {
+            throw new MovieNotFoundException($"Requested movie of Id: {id} was not found in the database.");
+        }
+
+        return Ok(movieToReturn);
+    }
 
         if (movie == null)
         {
             throw new MovieNotFoundException($"Movie requested of Id: {id} could not be found.");
         }
 
-        //note to self: this is the reason we use a IActionResult
-        //Returning Ok allows program to continue while GEH can do it's thing,
-        //Errors can just be treated as any other data structure
-        return Ok(movie);
-    }
+    //NOTE: using {name} restrains name to string, as by default it is string
+    [HttpGet("/movies/{name}")]
+    public async Task<IActionResult> GetAllMoviesByName(string name)
+    {
+        List<Movie> moviesToReturn = await dbContext.Movies
+            //filtering based on found names. Note that names are case-insensitive
+            .Where(m => m.Name != null && m.Name == name)
+            //enumerates through given values and creates a list of it
+            .ToListAsync();
 
+        if (!moviesToReturn.Any())
+        {
+            throw new MovieNotFoundException($"No movies of Name: {name} found in database.");
+        }
+
+        return Ok(moviesToReturn);
+    }
 
 }
