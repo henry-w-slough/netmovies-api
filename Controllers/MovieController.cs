@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 
+/// <summary>
+/// Controls all Movie-related HTTP requests and acts accordingly to them.
+/// </summary>
 [ApiController]
 [Route("movies/[controller]")]
 public class MovieController : ControllerBase
@@ -11,6 +14,10 @@ public class MovieController : ControllerBase
     private MovieDbContext dbContext;
 
 
+    /// <summary>
+    /// Creates new instances of MovieController.
+    /// </summary>
+    /// <param name="context">The context to the database, used for database reference.</param>
     public MovieController(MovieDbContext context)
     {
         dbContext = context;
@@ -18,56 +25,54 @@ public class MovieController : ControllerBase
 
 
     [HttpPost]
-    public Movie CreateMovie(MovieCreateRequest request)
+    public async Task<IActionResult> CreateMovie(MovieCreateRequest request)
     {
+        //checking to see if request matches all required Movie fields.
         if (!ModelState.IsValid)
         {
             throw new InvalidInputException("Movie Create Request is invalid.", ModelState);
         }
-        //accepted create request
-        else {
-            //creating a new Movie instance to pass on to dbContext
-            Movie newMovie = new Movie {    
-                Name = request.Name,
-                Description = request.Description,
-                DateAdded = DateTime.Now
-            };
 
+        //instance of Movie to be filled out
+        Movie newMovie = new Movie
+        {
+            Name = request.Name,
+            Description = request.Description,
+            DateAdded = DateTime.Now
+        };
 
-            try
-            {
-                dbContext.Movies.Add(newMovie);
-                dbContext.SaveChanges();
-            }
-            //catching Concurrency because it's the more specific error and also a subclass to DbUpdateException
-            catch (DbUpdateConcurrencyException exception)
-            {
-                throw new DbUpdateConcurrencyException("Requested Movie currently being modified.", exception);
-            }
-            //the more general exception, these are both bubbled up to and caught in the global exception handler
-            catch (DbUpdateException exception)
-            {
-                throw new DbUpdateException("Failed to save requested Movie to database.", exception);
-            } 
-
-
-            return newMovie;
+        try
+        {
+            dbContext.Movies.Add(newMovie);
+            await dbContext.SaveChangesAsync();
         }
+        catch (DbUpdateConcurrencyException exception)
+        {
+            throw new DbUpdateConcurrencyException("Requested Movie currently being modified.", exception);
+        }
+        catch (DbUpdateException exception)
+        {
+            throw new DbUpdateException("Failed to save requested Movie to database.", exception);
+        }
+
+        //returning 201 for Created. We use string.Empty to show that we deliberately didn't give location.
+        return Created(string.Empty, newMovie);
     }
 
 
     [HttpGet]
-    public IActionResult GetMovieById(int id)
+    public ActionResult<Movie> GetMovieById(int id)
     {
         Movie? movie = dbContext.Movies.Find(id);
+
         if (movie == null)
         {
             throw new MovieNotFoundException($"Movie requested of Id: {id} could not be found.");
         }
 
         //note to self: this is the reason we use a IActionResult
-        //Returning Ok allows global exception handler to do it's thing
-        //while the api continues to work.
+        //Returning Ok allows program to continue while GEH can do it's thing,
+        //Errors can just be treated as any other data structure
         return Ok(movie);
     }
 
