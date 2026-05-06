@@ -38,7 +38,8 @@ public class MovieController : ControllerBase
         {
             Name = request.Name,
             Description = request.Description,
-            DateAdded = DateTime.Now
+            DateAdded = DateTime.Now,
+            MovieUuid = Guid.NewGuid()
         };
 
         try
