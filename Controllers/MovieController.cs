@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -61,17 +62,24 @@ public class MovieController : ControllerBase
     }
 
 
-    [HttpDelete("deleteMovieByMovieId/{id:int}")]
-    public async Task<ActionResult<Movie>> DeleteMovieByMovieId(int id)
-    {
-        Movie? movie = dbContext.Movies.Find(id);
+    [HttpDelete("deleteMovieByStorageId/{storageId:guid}")]
+    public async Task<IActionResult> DeleteMovieByStorageId(Guid storageId)
+    {   
+        Movie? movieToDelete = await dbContext.Movies
+            //filtering based on found id.
+            .FirstOrDefaultAsync(m => m.StorageId == storageId);
 
-        if (movie == null)
+        if (movieToDelete == null)
         {
-            throw new MovieNotFoundException($"Movie requested of Id: {id} could not be found.");
+            throw new MovieNotFoundException($"Movie of StorageId: {storageId} not found in database.");
         }
 
-        return Ok(movie);
+        //removing movie and saving changes
+        dbContext.Movies.Remove(movieToDelete);
+        await dbContext.SaveChangesAsync();
+
+        //returning successful deletion
+        return NoContent();
     }
 
 
@@ -82,7 +90,7 @@ public class MovieController : ControllerBase
         List<Movie> moviesToReturn = await dbContext.Movies
             //filtering based on found names. Note that names are case-insensitive
             .Where(m => m.Name != null && m.Name == name)
-            //enumerates through given values and creates a list of it
+            //creates a list of it
             .ToListAsync();
 
         if (!moviesToReturn.Any())

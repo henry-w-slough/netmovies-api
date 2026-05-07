@@ -41,8 +41,8 @@ if (app.Environment.IsDevelopment())
 //using global exception handler
 app.UseExceptionHandler(); 
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-app.Run();
+app.Run("http://10.0.0.36:8080");
