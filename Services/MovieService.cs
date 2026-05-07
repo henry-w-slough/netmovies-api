@@ -47,7 +47,7 @@ public class MovieService : IMovieService
             throw new DbUpdateException("Failed to save requested Movie to database.", exception);
         }
 
-        throw new NotImplementedException();
+        return newMovie;
     }
 
 

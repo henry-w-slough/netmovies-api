@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore;
 public class MovieController : ControllerBase
 {
 
-    private readonly MovieService movieService;
+    private readonly IMovieService movieService;
 
 
     /// <summary>
     /// Creates a new instance of MovieController.
     /// </summary>
     /// <param name="movieService">The service reference.</param>
-    public MovieController(MovieService movieService)
+    public MovieController(IMovieService movieService)
     {
         this.movieService = movieService;
     }
