@@ -16,6 +16,8 @@ builder.Services.AddDbContext<MovieDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
+builder.Services.AddScoped<IMovieService, MovieService>();
+
 builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
     {
         // Stopping validation of request bodies to allow global exception handler to do it.
