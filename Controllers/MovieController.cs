@@ -84,8 +84,8 @@ public class MovieController : ControllerBase
 
 
     //NOTE: using {name} restrains name to string, as by default it is string
-    [HttpGet("getAllMoviesByName/{name}")]
-    public async Task<ActionResult<Movie>> GetAllMoviesByName(string name)
+    [HttpGet("getMoviesByName/{name}")]
+    public async Task<ActionResult<Movie>> GetMoviesByName(string name)
     {
         List<Movie> moviesToReturn = await dbContext.Movies
             //filtering based on found names. Note that names are case-insensitive
@@ -98,6 +98,14 @@ public class MovieController : ControllerBase
             throw new MovieNotFoundException($"No movies of Name: {name} found in database.");
         }
 
+        return Ok(moviesToReturn);
+    }
+
+
+    [HttpGet("getAllMovies")]
+    public async Task<ActionResult<List<Movie>>> GetAllMovies()
+    {
+        List<Movie> moviesToReturn = await dbContext.Movies.ToListAsync();
         return Ok(moviesToReturn);
     }
 
