@@ -11,17 +11,16 @@ using Microsoft.EntityFrameworkCore;
 public class MovieController : ControllerBase
 {
 
-    //reference to the database for this object
-    private MovieDbContext dbContext;
+    private readonly MovieService movieService;
 
 
     /// <summary>
-    /// Creates new instances of MovieController.
+    /// Creates a new instance of MovieController.
     /// </summary>
-    /// <param name="context">The context to the database, used for database reference.</param>
-    public MovieController(MovieDbContext context)
+    /// <param name="movieService">The service reference.</param>
+    public MovieController(MovieService movieService)
     {
-        dbContext = context;
+        this.movieService = movieService;
     }
 
 
@@ -34,50 +33,17 @@ public class MovieController : ControllerBase
             throw new InvalidInputException("Movie Create Request is invalid.", ModelState);
         }
 
-        //instance of Movie to be filled out
-        Movie newMovie = new Movie
-        {
-            Name = request.Name,
-            Description = request.Description,
-            DateAdded = DateTime.Now,
-            StorageId = Guid.NewGuid()
-        };
+        Movie toReturn = await movieService.CreateMovie(request);
 
-        try
-        {
-            dbContext.Movies.Add(newMovie);
-            await dbContext.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException exception)
-        {
-            throw new DbUpdateConcurrencyException("Requested Movie currently being modified.", exception);
-        }
-        catch (DbUpdateException exception)
-        {
-            throw new DbUpdateException("Failed to save requested Movie to database.", exception);
-        }
-
-        //returning 201 for Created. We use string.Empty to show that we deliberately didn't give location.
-        return Created(string.Empty, newMovie);
+        //returns the movie created with no location
+        return Created(string.Empty, toReturn);
     }
 
 
     [HttpDelete("deleteMovieByStorageId/{storageId:guid}")]
     public async Task<IActionResult> DeleteMovieByStorageId(Guid storageId)
     {   
-        Movie? movieToDelete = await dbContext.Movies
-            //filtering based on found id.
-            .FirstOrDefaultAsync(m => m.StorageId == storageId);
-
-        if (movieToDelete == null)
-        {
-            throw new MovieNotFoundException($"Movie of StorageId: {storageId} not found in database.");
-        }
-
-        //removing movie and saving changes
-        dbContext.Movies.Remove(movieToDelete);
-        await dbContext.SaveChangesAsync();
-
+        await movieService.DeleteMovieByStorageId(storageId);
         //returning successful deletion
         return NoContent();
     }
@@ -85,28 +51,19 @@ public class MovieController : ControllerBase
 
     //NOTE: using {name} restrains name to string, as by default it is string
     [HttpGet("getMoviesByName/{name}")]
-    public async Task<ActionResult<Movie>> GetMoviesByName(string name)
+    public async Task<ActionResult<List<Movie>>> GetMoviesByName(string name)
     {
-        List<Movie> moviesToReturn = await dbContext.Movies
-            //filtering based on found names. Note that names are case-insensitive
-            .Where(m => m.Name != null && m.Name == name)
-            //creates a list of it
-            .ToListAsync();
-
-        if (!moviesToReturn.Any())
-        {
-            throw new MovieNotFoundException($"No movies of Name: {name} found in database.");
-        }
-
-        return Ok(moviesToReturn);
+        //getting return from service to return back as response
+        List<Movie> toReturn = await movieService.GetMoviesByName(name);
+        return Ok(toReturn);
     }
 
 
     [HttpGet("getAllMovies")]
     public async Task<ActionResult<List<Movie>>> GetAllMovies()
     {
-        List<Movie> moviesToReturn = await dbContext.Movies.ToListAsync();
-        return Ok(moviesToReturn);
+        List<Movie> toReturn = await movieService.GetAllMovies();
+        return Ok(toReturn);
     }
 
 }
