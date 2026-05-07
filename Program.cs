@@ -45,4 +45,4 @@ app.UseExceptionHandler();
 app.UseAuthorization();
 app.MapControllers();
 
-app.Run("http://10.0.0.36:8080");
+app.Run();
