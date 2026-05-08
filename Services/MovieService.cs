@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 
 /// <summary>
-/// The Service which handles all movie-related requests directed to the MovieDbContext.
+/// The Service which handles all direct logic related to Movie HTTP Requests.
 /// </summary>
 public class MovieService : IMovieService
 {

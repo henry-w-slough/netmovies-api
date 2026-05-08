@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 
 /// <summary>
-/// The interface for a MovieService. Defines a contract for a MovieService implementation
+/// The interface for a MovieService. Defines a contract for a MovieService implementation.
 /// </summary>
 public interface IMovieService
 {

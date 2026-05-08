@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 
 /// <summary>
-/// Controls all Movie-related HTTP requests and acts accordingly to them.
+/// Controls all Movie-related HTTP requests.
 /// </summary>
 [ApiController]
 [Route("metadata/[controller]")]
