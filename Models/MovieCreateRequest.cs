@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 public class MovieCreateRequest
 {
     [Required]
-    [MinLength(1)]
+    [MinLength(3)]
     [MaxLength(255)]
     public string? Name {get; set;}
     
