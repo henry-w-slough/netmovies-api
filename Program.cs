@@ -30,18 +30,14 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 var app = builder.Build();
 
-app.UseExceptionHandler(_ => { });
+app.UseExceptionHandler();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();       
     app.UseSwagger();       
     app.UseSwaggerUI();   
 }
-
-//using global exception handler
-app.UseExceptionHandler(); 
 
 //app.UseHttpsRedirection();
 app.UseAuthorization();

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 
 /// <summary>
-/// Intercepts all unhandled exceptions and acta accordingly. Provides specific output data and info based on the given exception.
+/// Intercepts all unhandled exceptions and acts accordingly. Provides specific output data and info based on the given exception.
 /// </summary>
 public class GlobalExceptionHandler : IExceptionHandler
 {
@@ -28,17 +28,29 @@ public class GlobalExceptionHandler : IExceptionHandler
             errorDetails.ExceptionMessage = exception.Message;
             errorDetails.StatusCode = (int) HttpStatusCode.NotFound;
         }
-        if (exception is DbUpdateConcurrencyException)
+        else if (exception is DbUpdateConcurrencyException)
         {
-            errorDetails.Message = "Requested update is already being modified, the operation could not be performed.";
+            errorDetails.Message = "Data requested for modification has already been modified and the request could not be complete.";
             errorDetails.ExceptionMessage = exception.Message;
             errorDetails.StatusCode = (int) HttpStatusCode.Conflict;
+        }
+        else if (exception is DbUpdateException)
+        {
+            errorDetails.Message = "Exception was thrown when attemping to save the database and the request could not be completed.";
+            errorDetails.ExceptionMessage = exception.Message;
+            errorDetails.StatusCode = (int) HttpStatusCode.ServiceUnavailable;
+        }
+        else if (exception is Microsoft.Data.SqlClient.SqlException)
+        {
+            errorDetails.Message = "Database returned an exception when trying to access it and the request could not be completed.";
+            errorDetails.ExceptionMessage = exception.Message;
+            errorDetails.StatusCode = (int) HttpStatusCode.ServiceUnavailable;
         }
         else {
             //handling every other exception if none of the specific ones match
             errorDetails.StatusCode = (int) HttpStatusCode.InternalServerError;
-            errorDetails.Message = "Something went wrong.";
-            errorDetails.ExceptionMessage = exception.Message;
+            errorDetails.Message = "An unhandled exception was thrown.";
+            errorDetails.ExceptionMessage = $"{exception.GetType().FullName}: {exception.Message}";
         }
 
 
@@ -51,26 +63,6 @@ public class GlobalExceptionHandler : IExceptionHandler
 
 
         return true;
-    }
-
-
-    /// <summary>
-    /// Generates a descriptive error message that contains all validation errors.
-    /// </summary>
-    /// <param name="exception">The InvalidInputException to generate the error message for.</param>
-    /// <returns>The error message to return.</returns>
-    private string GenerateInvalidInputMessage(InvalidInputException exception)
-    {
-        string message = exception.Message;
-
-        // We are going to add the entire collection of validation errors to our single error message to return.
-        // For each value in our model state dictionary, we are going to put all of their error message's in to a list.
-        List<string> errors = exception.ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)).ToList();
-
-        // Join the error message list back into a single string and append to the original message.
-        message += string.Join(", ", errors); 
-
-        return message;
     }
 
 }

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 /// Controls all Movie-related HTTP requests.
 /// </summary>
 [ApiController]
-[Route("/metadata/[controller]")]
+[Route("[controller]")]
 public class MovieController : ControllerBase
 {
 
