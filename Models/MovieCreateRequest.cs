@@ -8,9 +8,8 @@ public class MovieCreateRequest
 {
     [Required]
     [MinLength(3)]
-    [MaxLength(255)]
     public string? Name {get; set;}
-    
-    [MaxLength(255)]
-    public string? Description {get; set;}
+
+    //with default value
+    public string Description {get; set;} = "No description provided for this movie.";
 }

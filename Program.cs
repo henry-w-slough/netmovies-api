@@ -12,9 +12,17 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-builder.Services.AddDbContext<MovieDbContext>(
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+builder.Services.AddDbContext<MovieDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        //using this so momentary drops in db connection don't fuck the whole thing up
+        sqlServerOptionsAction: sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+        }));
 
 builder.Services.AddScoped<IMovieService, MovieService>();
 
@@ -39,7 +47,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();   
 }
 
-//app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
