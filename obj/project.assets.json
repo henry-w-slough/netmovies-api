@@ -2029,19 +2029,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\HW\\.nuget\\packages\\": {}
+    "/Users/henryslough/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\HW\\Desktop\\netmovies-metadata-api\\netmovies-metadata-api.csproj",
+      "projectUniqueName": "/Users/henryslough/projects/netmovies-metadata-api/netmovies-metadata-api.csproj",
       "projectName": "netmovies-metadata-api",
-      "projectPath": "C:\\Users\\HW\\Desktop\\netmovies-metadata-api\\netmovies-metadata-api.csproj",
-      "packagesPath": "C:\\Users\\HW\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\HW\\Desktop\\netmovies-metadata-api\\obj\\",
+      "projectPath": "/Users/henryslough/projects/netmovies-metadata-api/netmovies-metadata-api.csproj",
+      "packagesPath": "/Users/henryslough/.nuget/packages/",
+      "outputPath": "/Users/henryslough/projects/netmovies-metadata-api/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\HW\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/henryslough/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
@@ -2065,7 +2065,7 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.100"
+      "SdkAnalysisLevel": "10.0.200"
     },
     "frameworks": {
       "net10.0": {
@@ -2111,7 +2111,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.201/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

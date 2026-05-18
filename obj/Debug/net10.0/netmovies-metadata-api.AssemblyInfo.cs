@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("netmovies-metadata-api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4764ff8aa7c585acb13cfac9961678ece9836d6c")]
 [assembly: System.Reflection.AssemblyProductAttribute("netmovies-metadata-api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("netmovies-metadata-api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
