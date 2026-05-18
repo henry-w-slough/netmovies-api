@@ -2,10 +2,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 
 /// <summary>
-/// This exception is thrown when the requester provides invalid input,
-/// whether for a request body or endpoint parameter.
+/// Exception thrown when the given client input is invalid.
 /// </summary>
-public class InvalidInputException : Exception
+class InvalidInputException : Exception
 {
     public ModelStateDictionary ModelState {get; set;}
 

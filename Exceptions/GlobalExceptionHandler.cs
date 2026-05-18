@@ -2,7 +2,6 @@ using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
-
 /// <summary>
 /// Intercepts all unhandled exceptions and acts accordingly. Provides specific output data and info based on the given exception.
 /// </summary>
@@ -40,7 +39,7 @@ public class GlobalExceptionHandler : IExceptionHandler
             errorDetails.ExceptionMessage = exception.Message;
             errorDetails.StatusCode = (int) HttpStatusCode.ServiceUnavailable;
         }
-        else if (exception is Microsoft.Data.SqlClient.SqlException)
+        else if (exception is System.Data.SqlClient.SqlException)
         {
             errorDetails.Message = "Database returned an exception when trying to access it and the request could not be completed.";
             errorDetails.ExceptionMessage = exception.Message;

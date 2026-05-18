@@ -2,14 +2,14 @@ using System.ComponentModel.DataAnnotations;
 
 
 /// <summary>
-/// The request used for creating a new Movie instance.
+/// Request used to create a new Movie.
 /// </summary>
 public class MovieCreateRequest
 {
     [Required]
-    [MinLength(3)]
+    [MaxLength(255)]    
     public string? Name {get; set;}
 
-    //with default value
-    public string Description {get; set;} = "No description provided for this movie.";
+    [MaxLength(255)]
+    public string? Description {get; set;} = "No description provided for this movie.";
 }

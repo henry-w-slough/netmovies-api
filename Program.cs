@@ -19,7 +19,7 @@ builder.Services.AddDbContext<MovieDbContext>(options =>
         sqlServerOptionsAction: sqlOptions =>
         {
             sqlOptions.EnableRetryOnFailure(
-                maxRetryCount: 5,
+                maxRetryCount: 3,
                 maxRetryDelay: TimeSpan.FromSeconds(30),
                 errorNumbersToAdd: null);
         }));
@@ -51,3 +51,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

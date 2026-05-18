@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 
 
 /// <summary>
@@ -64,6 +62,6 @@ public class MovieController : ControllerBase
     {
         List<Movie> toReturn = await movieService.GetAllMovies();
         return Ok(toReturn);
-    }
+    } 
 
 }

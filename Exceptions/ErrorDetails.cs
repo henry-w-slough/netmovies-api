@@ -1,6 +1,5 @@
 
 
-
 /// <summary>
 /// Holds all info related to exceptions that needs to be returned to the user.
 /// </summary>
